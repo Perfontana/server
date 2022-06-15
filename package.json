@@ -1,4 +1,5 @@
 {
+  "author": "Ilya Stalmahov", 
   "name": "mewl-server",
   "version": "1.0.0",
   "description": "",
@@ -8,7 +9,6 @@
     "start": "NODE_ENV=production node dist/index.js"
   },
   "keywords": [],
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "@fastify/swagger": "^6.1.0",
