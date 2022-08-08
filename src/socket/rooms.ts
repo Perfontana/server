@@ -50,7 +50,11 @@ export const addSocketHandlers = async (
   onPlayerConnect(config, io);
 
   io.on("connect", async (socket) => {
+    logger.debug("PLayer connected!!");
+
     socket.on("disconnect", async () => {
+      logger.debug("-");
+
       updatePlayerStatus(io, socket.data.room!, socket.data.player!, false);
     });
 

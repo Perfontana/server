@@ -51,7 +51,7 @@ export const removePlayerRoute = (
 
     if (room.players.length === 0) {
       await deleteRoom({ code: room.code });
-      return res.status(204);
+      return res.status(204).send();
     }
 
     if (deletedPlayer.isOwner) {
@@ -60,6 +60,6 @@ export const removePlayerRoute = (
       io.to(room.code!).emit("player-updated", updatedOwner);
     }
 
-    res.status(204);
+    res.status(204).send();
   },
 });

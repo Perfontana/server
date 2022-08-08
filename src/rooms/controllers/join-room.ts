@@ -4,6 +4,7 @@ import { Room } from "../../models/room";
 import { Config } from "../../plugins/config";
 import { SocketServer } from "../../socket/Socket";
 import { BadRequestError, NotFoundError } from "../../utils/errors";
+import { parseMultipart } from "../../utils/parseMultipart";
 import { joinRoomBodySchema, roomCodeParamsSchema } from "../rooms.schemas";
 import { addPlayer, tokenResponse } from "../rooms.service";
 
@@ -15,7 +16,7 @@ export const joinRoom = (
   IncomingMessage,
   ServerResponse,
   {
-    Body: { name: string };
+    Body: { name: string; isOwner: boolean; avatar: string };
     Params: { code: string };
   }
 > => ({
@@ -27,13 +28,16 @@ export const joinRoom = (
     body: joinRoomBodySchema,
     params: roomCodeParamsSchema,
   },
+  preValidation: [parseMultipart],
   handler: async (req) => {
     const room = await Room.findOne({ code: req.params.code });
 
     if (!room) throw new NotFoundError("Room not found");
-    if (room.isStarted) throw new BadRequestError("Game is not started");
+    if (room.isStarted) throw new BadRequestError("Game is started");
     if (room.players.length >= room.maximumPlayers)
       throw new BadRequestError("Room is full");
+
+    if (room.players.length === 0) req.body.isOwner = true;
 
     const { modifiedCount } = await addPlayer(req.params.code, req.body);
 

@@ -43,8 +43,6 @@ export const startRound = async (
     }, 5 * SECOND);
   }, room.roundTime * SECOND);
 
-  console.log("started timers");
-
   await Room.updateOne(
     { code: room.code },
     {

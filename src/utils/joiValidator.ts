@@ -1,4 +1,9 @@
+import { isJson } from "./isJson";
+
 export const joiValidator =
   ({ schema }: any) =>
-  (data: {}) =>
-    schema.validate(data);
+  (data: string) => {
+    console.log(data);
+
+    return schema.validate(data);
+  };

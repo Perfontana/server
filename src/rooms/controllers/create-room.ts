@@ -1,8 +1,16 @@
 import { RawServerBase, RouteOptions } from "fastify";
+import { MultipartFile } from "fastify-multipart";
+import { createWriteStream } from "fs";
 import { IncomingMessage, ServerResponse } from "http";
-import { Logger } from "pino";
+import path, { extname } from "path";
+import { Logger, P } from "pino";
+import shortid from "shortid";
+import { pipeline } from "stream";
+import { promisify } from "util";
 import { Room, RoomDoc } from "../../models/room";
 import { Config } from "../../plugins/config";
+import { BadRequestError } from "../../utils/errors";
+import { parseMultipart } from "../../utils/parseMultipart";
 import { createRoomSchema } from "../rooms.schemas";
 import { createRoom, tokenResponse } from "../rooms.service";
 
@@ -22,9 +30,11 @@ export const createRoomRoute = (
     tags: ["room"],
     body: createRoomSchema,
   },
-  handler: async (request) => {
-    const room = await createRoom(request.body);
+  handler: async (req) => {
+    console.log(req.body);
 
-    return tokenResponse(config, room.code!, room.players[0].name);
+    const room = await createRoom(req.body);
+
+    return room;
   },
 });

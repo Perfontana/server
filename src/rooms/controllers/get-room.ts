@@ -3,11 +3,7 @@ import { IncomingMessage, ServerResponse } from "http";
 import { Logger } from "pino";
 import { Config } from "../../plugins/config";
 import { getRoomGuardData, roomGuard } from "../../utils/roomGuard";
-import {
-  authorizationHeaderSchema,
-  getRoomResponseSchema,
-  roomResponseSchema,
-} from "../rooms.schemas";
+import { authorizationHeaderSchema } from "../rooms.schemas";
 
 export const getRoom = (
   config: Config,

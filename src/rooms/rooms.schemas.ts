@@ -5,25 +5,14 @@ export const createRoomSchema = Joi.object()
   .keys({
     maximumPlayers: Joi.number().min(2).max(16).default(10),
     roundTime: Joi.number().min(60).max(180).default(120),
-    players: Joi.array()
-      .items(
-        Joi.object().keys({
-          name: Joi.string().min(3).max(15).required(),
-          isOwner: Joi.boolean().valid(true).default(true),
-          isOnline: Joi.boolean().valid(false).default(false),
-        })
-      )
-      .required()
-      .min(1)
-      .max(1),
   })
   .required()
   .options({ stripUnknown: true });
 
 export const updateRoomSchema = Joi.object()
   .keys({
-    maximumPlayers: Joi.number().min(2).max(16).default(10),
-    roundTime: Joi.number().min(60).max(180).default(120),
+    maximumPlayers: Joi.number().min(2).max(16),
+    roundTime: Joi.number().min(60).max(180),
   })
   .required()
   .options({ stripUnknown: true });
@@ -31,6 +20,7 @@ export const updateRoomSchema = Joi.object()
 export const joinRoomBodySchema = Joi.object()
   .keys({
     name: Joi.string().min(3).max(15).required(),
+    avatar: Joi.string().allow("", null).default(""),
     isOwner: Joi.boolean().valid(false).default(false),
     isOnline: Joi.boolean().valid(false).default(false),
   })

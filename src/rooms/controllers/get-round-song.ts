@@ -1,15 +1,11 @@
-import { RouteOptions, RawServerBase } from "fastify";
+import { RawServerBase, RouteOptions } from "fastify";
 import { IncomingMessage, ServerResponse } from "http";
 import { Logger } from "pino";
-import { Room } from "../../models/room";
 import { Config } from "../../plugins/config";
 import { SocketServer } from "../../socket/Socket";
 import { BadRequestError, NotFoundError } from "../../utils/errors";
 import { getRoomGuardData, roomGuard } from "../../utils/roomGuard";
-import {
-  authorizationHeaderSchema,
-  roomCodeParamsSchema,
-} from "../rooms.schemas";
+import { authorizationHeaderSchema } from "../rooms.schemas";
 import { getPreviousSong } from "../rooms.service";
 
 export const getRoundSong = (

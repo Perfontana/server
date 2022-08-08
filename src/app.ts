@@ -12,6 +12,8 @@ import path from "path";
 import fastifySwagger from "@fastify/swagger";
 import { swaggerOptions } from "./utils/docs";
 
+const API_URL = "api/v1";
+
 interface ApplicationOptions {
   config: Config;
   logger: Logger;
@@ -29,6 +31,8 @@ const buildApp = async ({
 
   addSocketHandlers(config, logger, socketServer);
 
+  app.setValidatorCompiler(joiValidator);
+
   app.register(cors);
 
   await app.register(fastifySwagger, swaggerOptions);
@@ -38,11 +42,9 @@ const buildApp = async ({
     prefix: "/uploads/",
   });
 
-  app.setValidatorCompiler(joiValidator);
-
   app.setErrorHandler(errorHandler(config, logger));
 
-  app.register(routes(config, logger, socketServer));
+  app.register(routes(config, logger, socketServer), { prefix: API_URL });
 
   await app.ready();
   await app.swagger();

@@ -31,6 +31,8 @@ export const updateRoomRoute = (
   handler: async (request, reply) => {
     const { room } = getRoomGuardData(request);
 
+    logger.debug(request.body, "Update data");
+
     await updateRoom({ code: room.code }, request.body);
 
     io.to(room.code).emit("room-updated", { code: room.code, ...request.body });

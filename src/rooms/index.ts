@@ -14,12 +14,15 @@ import { sendRoundSong } from "./controllers/send-round-song";
 import { startGame } from "./controllers/start-game";
 import { updateRoomRoute } from "./controllers/update-room";
 
+export const ROOMS_ROUTE_PREFIX = "/rooms";
+
 export const roomRoutes =
   (config: Config, logger: Logger, io: Server): FastifyPluginAsync =>
   async (app) => {
     app
       .decorateRequest("room", "")
       .decorateRequest("player", "")
+      .register(fastifyMultipart)
       .route(createRoomRoute(config, logger.child({ name: "create-room" })))
       .route(updateRoomRoute(config, logger.child({ name: "update-room" }), io))
       .route(getRoom(config, logger.child({ name: "get-room" })))
@@ -30,6 +33,5 @@ export const roomRoutes =
         removePlayerRoute(config, logger.child({ name: "remove-player" }), io)
       )
       .route(startGame(config, logger, io))
-      .register(fastifyMultipart)
       .route(sendRoundSong(config, logger, io));
   };
