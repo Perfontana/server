@@ -7,6 +7,10 @@ export interface Config {
   JWT_SECRET: string;
   PORT: string;
   LOG_LEVEL: string;
+  FREESOUND_API_URL: string;
+  FREESOUND_CLIENT_ID: string;
+  FREESOUND_API_KEY: string;
+  SERVER_URL: string;
 }
 
 export const loadConfig = (extraOptions: Partial<Config> = {}) => {
