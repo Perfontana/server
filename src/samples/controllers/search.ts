@@ -4,6 +4,7 @@ import fetch from "node-fetch";
 import { Logger } from "pino";
 import { URL } from "url";
 import { Config } from "../../plugins/config";
+import { roomGuard } from "../../utils/roomGuard";
 
 export const searchSampleRoute = (
   config: Config,
@@ -23,12 +24,13 @@ export const searchSampleRoute = (
   method: "GET",
   url: "/",
   schema: {},
+  preHandler: roomGuard(config, logger),
   handler: async (req) => {
     console.log(req.body);
 
     const url = new URL(`${config.FREESOUND_API_URL}/search/text/`);
 
-    url.searchParams.set("fields", "name,previews,id");
+    url.searchParams.set("fields", "name,previews,id,duration");
     url.searchParams.set("query", req.query.query);
     url.searchParams.set("weights", req.query.weights);
     url.searchParams.set("page", req.query.page);

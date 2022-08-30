@@ -11,6 +11,9 @@ export interface Config {
   FREESOUND_CLIENT_ID: string;
   FREESOUND_API_KEY: string;
   SERVER_URL: string;
+
+  FFMPEG_PATH: string;
+  UPLOADS_PATH: string;
 }
 
 export const loadConfig = (extraOptions: Partial<Config> = {}) => {
