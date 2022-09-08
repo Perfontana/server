@@ -27,11 +27,7 @@ export const parseMultipart: preValidationAsyncHookHandler = async (
     } else {
       body[part.fieldname] = (part as any).value;
     }
-
-    console.log("ADDED ", part.fieldname);
   }
-
-  console.log(body);
 
   req.body = body;
 };

@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "nodemon --config nodemon.json src/index.ts",
+    "build": "tsc",
     "start": "NODE_ENV=production node dist/index.js"
   },
   "keywords": [],
@@ -25,6 +26,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.0",
     "node-fetch": "^2.6.7",
+    "node-schedule": "^2.1.0",
     "nodemon": "^2.0.19",
     "pino": "^7.9.1",
     "progress-stream": "^2.0.0",
@@ -43,6 +45,7 @@
     "@types/mongoose": "^5.11.97",
     "@types/node": "^17.0.21",
     "@types/node-fetch": "^2.6.2",
+    "@types/node-schedule": "^2.1.0",
     "@types/progress-stream": "^2.0.2",
     "@types/shortid": "^0.0.29",
     "pino-pretty": "^7.6.1",

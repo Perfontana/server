@@ -14,6 +14,11 @@ export interface Config {
 
   FFMPEG_PATH: string;
   UPLOADS_PATH: string;
+
+  CLEANUP_JOB_SCHEDULE: string;
+
+  ROOM_EXPIRE: string;
+  FILE_EXPIRE: string;
 }
 
 export const loadConfig = (extraOptions: Partial<Config> = {}) => {

@@ -1,5 +1,6 @@
 import { RawServerBase, RouteOptions } from "fastify";
 import { MultipartFile } from "fastify-multipart";
+import Ffmpeg from "fluent-ffmpeg";
 import { createWriteStream } from "fs";
 import { IncomingMessage, ServerResponse } from "http";
 import path from "path";
@@ -11,6 +12,7 @@ import { Config } from "../../plugins/config";
 import { SocketServer } from "../../socket/Socket";
 import { BadRequestError } from "../../utils/errors";
 import { getRoomGuardData, roomGuard } from "../../utils/roomGuard";
+import { saveAsMP3 } from "../../utils/saveAsMP3";
 import { canEndRound, endRound, getTimer } from "../game.service";
 import {
   authorizationHeaderSchema,
@@ -64,10 +66,9 @@ export const sendRoundSong = (
       player.name
     }${path.extname(data.filename)}`;
 
-    await pump(
-      data.file,
-      createWriteStream(path.resolve(`./uploads/${filepath}`))
-    );
+    const filename = path.resolve(`./uploads/${filepath}`);
+
+    await saveAsMP3(data.file, filename, config.FFMPEG_PATH);
 
     await Room.updateOne(
       { code: room.code },

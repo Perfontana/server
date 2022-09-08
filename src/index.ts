@@ -1,5 +1,6 @@
 import pino from "pino";
 import buildApp from "./app";
+import { startCleanupJob } from "./jobs/cleanup";
 import { loadConfig } from "./plugins/config";
 import { loadDatabase } from "./plugins/mongo";
 
@@ -17,6 +18,8 @@ const start = async () => {
     config,
     logger,
   });
+
+  startCleanupJob(logger, config);
 
   try {
     await app.ready();
