@@ -1,4 +1,4 @@
-import pino from "pino";
+import pino, { LoggerOptions } from "pino";
 import buildApp from "./app";
 import { startCleanupJob } from "./jobs/cleanup";
 import { loadConfig } from "./plugins/config";
@@ -7,10 +7,15 @@ import { loadDatabase } from "./plugins/mongo";
 const start = async () => {
   const config = loadConfig();
 
-  const logger = pino({
+  const pinoOptions: LoggerOptions = {
     level: config.LOG_LEVEL,
-    transport: { target: "pino-pretty" },
-  });
+  };
+
+  if (process.env.NODE_ENV !== "production") {
+    pinoOptions.transport = { target: "pino-pretty" };
+  }
+
+  const logger = pino(pinoOptions);
 
   await loadDatabase(config, logger);
 

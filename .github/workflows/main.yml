@@ -42,6 +42,7 @@ jobs:
         uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_PORT: 4000
+          envkey_NODE_ENV: "production"
           envkey_SERVER_URL: "mewl-game.ru"
           envkey_MONGO_DB_HOST: ${{ secrets.MONGO_DB_HOST }}
           envkey_MONGO_DB_PORT: ${{ secrets.MONGO_DB_PORT }}
