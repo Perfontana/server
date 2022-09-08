@@ -25,7 +25,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-      - run: npm ci
+      - run: npm install
       - run: npm run build --if-present
       - run: cp package*.json dist && cd dist && npm ci --production
 
@@ -41,7 +41,7 @@ jobs:
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v1.3
         with:
-          envkey_PORT: 4000
+          envkey_PORT: 7000
           envkey_NODE_ENV: "production"
           envkey_SERVER_URL: "mewl-game.ru"
           envkey_MONGO_DB_HOST: ${{ secrets.MONGO_DB_HOST }}
