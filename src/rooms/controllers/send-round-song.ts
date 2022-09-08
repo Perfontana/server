@@ -1,12 +1,8 @@
 import { RawServerBase, RouteOptions } from "fastify";
 import { MultipartFile } from "fastify-multipart";
-import Ffmpeg from "fluent-ffmpeg";
-import { createWriteStream } from "fs";
 import { IncomingMessage, ServerResponse } from "http";
 import path from "path";
 import { Logger } from "pino";
-import { pipeline } from "stream";
-import { promisify } from "util";
 import { Room } from "../../models/room";
 import { Config } from "../../plugins/config";
 import { SocketServer } from "../../socket/Socket";
@@ -14,13 +10,8 @@ import { BadRequestError } from "../../utils/errors";
 import { getRoomGuardData, roomGuard } from "../../utils/roomGuard";
 import { saveAsMP3 } from "../../utils/saveAsMP3";
 import { canEndRound, endRound, getTimer } from "../game.service";
-import {
-  authorizationHeaderSchema,
-  sendSongHeadersSchema,
-} from "../rooms.schemas";
+import { sendSongHeadersSchema } from "../rooms.schemas";
 import { updateSongStatus } from "../rooms.service";
-
-const pump = promisify(pipeline);
 
 export const sendRoundSong = (
   config: Config,
@@ -62,13 +53,13 @@ export const sendRoundSong = (
 
     const data: MultipartFile = await (req as any).file();
 
-    const filepath = `${room.code}-round-${room.currentRound}-${
+    const filename = `${room.code}-round-${room.currentRound}-${
       player.name
     }${path.extname(data.filename)}`;
 
-    const filename = path.resolve(`./uploads/${filepath}`);
+    const filepath = path.join(config.UPLOADS_PATH, filename);
 
-    await saveAsMP3(data.file, filename, config.FFMPEG_PATH);
+    await saveAsMP3(data.file, filepath, config.FFMPEG_PATH);
 
     await Room.updateOne(
       { code: room.code },
@@ -76,7 +67,7 @@ export const sendRoundSong = (
         $push: {
           [`songs.${initialSongAuthor || player.name}`]: {
             player: player.name,
-            url: `/uploads/${filepath}`,
+            url: `/uploads/${filename}`,
           },
         },
       }

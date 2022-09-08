@@ -37,11 +37,6 @@ const buildApp = async ({
 
   await app.register(fastifySwagger, swaggerOptions);
 
-  app.register(fastifyStatic, {
-    root: path.join(__dirname, "../uploads"),
-    prefix: "/uploads/",
-  });
-
   app.setErrorHandler(errorHandler(config, logger));
 
   app.register(routes(config, logger, socketServer), { prefix: API_URL });

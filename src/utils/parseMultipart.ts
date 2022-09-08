@@ -4,13 +4,13 @@ import path from "path";
 import shortid from "shortid";
 import { pipeline } from "stream";
 import { promisify } from "util";
+import { Config } from "../plugins/config";
 
 const pump = promisify(pipeline);
 
-export const parseMultipart: preValidationAsyncHookHandler = async (
-  req,
-  reply
-) => {
+export const parseMultipart: (
+  config: Config
+) => preValidationAsyncHookHandler = (config: Config) => async (req, reply) => {
   const parts = req.parts();
 
   const body: any = {};
@@ -21,7 +21,7 @@ export const parseMultipart: preValidationAsyncHookHandler = async (
       const filename = `${shortid()}${extention}`;
       await pump(
         part.file,
-        createWriteStream(path.resolve(`./uploads/${filename}`))
+        createWriteStream(path.join(config.UPLOADS_PATH, filename))
       );
       body[part.fieldname] = filename;
     } else {

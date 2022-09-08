@@ -28,7 +28,7 @@ export const joinRoom = (
     body: joinRoomBodySchema,
     params: roomCodeParamsSchema,
   },
-  preValidation: [parseMultipart],
+  preValidation: [parseMultipart(config)],
   handler: async (req) => {
     const room = await Room.findOne({ code: req.params.code });
 
