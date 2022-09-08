@@ -53,7 +53,7 @@ jobs:
           envkey_FREESOUND_API_KEY: ${{ secrets.FREESOUND_API_KEY }}
           envkey_FFMPEG_PATH: ${{ secrets.FFMPEG_PATH }}
           envkey_UPLOADS_PATH: ${{ secrets.UPLOADS_PATH }}
-          envkey_CLEANUP_JOB_SCHEDULE: "*/15 * * * * *"
+          envkey_CLEANUP_JOB_SCHEDULE: "*/15 * * * *"
           envkey_ROOM_EXPIRE: 86400000
           envkey_FILE_EXPIRE: 86400000
           envkey_LOG_LEVEL: trace
