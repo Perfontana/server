@@ -28,7 +28,7 @@ const start = async () => {
 
   try {
     await app.ready();
-    await app.listen(config.PORT);
+    await app.listen(config.PORT, config.SERVER_URL);
   } catch (err) {
     logger.error(err);
     process.exit(1);
