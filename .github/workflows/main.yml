@@ -5,13 +5,12 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -20,45 +19,45 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    
-    - name: Install SSH Key
-      uses: shimataro/ssh-key-action@v2
-      with:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build --if-present
+
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           known_hosts: unnecessary
 
-    - name: Adding Known Hosts
-      run: ssh-keyscan -p ${{ secrets.SSH_PORT}} -H ${{ secrets.SSH_HOST }}  >> ~/.ssh/known_hosts
-      
-    - name: Make envfile
-      uses: SpicyPizza/create-envfile@v1.3
-      with:
-        envkey_PORT: 7000
-        envkey_SERVER_URL: "mewl-game.ru"
-        envkey_MONGO_DB_HOST: ${{ secrets.MONGO_DB_HOST }}
-        envkey_MONGO_DB_PORT: ${{ secrets.MONGO_DB_PORT }}
-        envkey_MONGO_DB_DATABASE: ${{ secrets.MONGO_DB_DATABASE }}
-        envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
-        envkey_FREESOUND_API_URL: "https://freesound.org/apiv2"
-        envkey_FREESOUND_CLIENT_ID: ${{ secrets.FREESOUND_CLIENT_ID }}
-        envkey_FREESOUND_API_KEY: ${{ secrets.FREESOUND_API_KEY }}
-        envkey_FFMPEG_PATH: ${{ secrets.FFMPEG_PATH }}
-        envkey_UPLOADS_PATH: ${{ secrets.UPLOADS_PATH }}
-        envkey_CLEANUP_JOB_SCHEDULE: "*/15 * * * * *"
-        envkey_ROOM_EXPIRE: 86400000
-        envkey_FILE_EXPIRE: 86400000
-        envkey_LOG_LEVEL: trace
-        directory: dist
-        file_name: .env
-        fail_on_empty: false
+      - name: Adding Known Hosts
+        run: ssh-keyscan -p ${{ secrets.SSH_PORT}} -H ${{ secrets.SSH_HOST }}  >> ~/.ssh/known_hosts
 
-    - name: Deploy with rsync
-      run: rsync -avz -e "ssh -p ${{ secrets.SSH_PORT }}" ./dist/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/root/mewl-server/
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_PORT: 4000
+          envkey_SERVER_URL: "mewl-game.ru"
+          envkey_MONGO_DB_HOST: ${{ secrets.MONGO_DB_HOST }}
+          envkey_MONGO_DB_PORT: ${{ secrets.MONGO_DB_PORT }}
+          envkey_MONGO_DB_DATABASE: ${{ secrets.MONGO_DB_DATABASE }}
+          envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          envkey_FREESOUND_API_URL: "https://freesound.org/apiv2"
+          envkey_FREESOUND_CLIENT_ID: ${{ secrets.FREESOUND_CLIENT_ID }}
+          envkey_FREESOUND_API_KEY: ${{ secrets.FREESOUND_API_KEY }}
+          envkey_FFMPEG_PATH: ${{ secrets.FFMPEG_PATH }}
+          envkey_UPLOADS_PATH: ${{ secrets.UPLOADS_PATH }}
+          envkey_CLEANUP_JOB_SCHEDULE: "*/15 * * * * *"
+          envkey_ROOM_EXPIRE: 86400000
+          envkey_FILE_EXPIRE: 86400000
+          envkey_LOG_LEVEL: trace
+          directory: dist
+          file_name: .env
+          fail_on_empty: false
+
+      - name: Deploy with rsync
+        run: rsync -avz -e "ssh -p ${{ secrets.SSH_PORT }}" ./dist/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/root/mewl-server/
