@@ -26,8 +26,6 @@ export const youtubeDownloadRoute = (
   schema: {},
   preHandler: roomGuard(config, logger),
   handler: async (req) => {
-    console.log(req.params.videoId);
-
     const result = await youtubeDownloader.download(req.params.videoId);
 
     const file = result.file.split("uploads/")[1];

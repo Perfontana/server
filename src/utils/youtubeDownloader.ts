@@ -3,15 +3,6 @@ import { Logger } from "pino";
 import { Config } from "../plugins/config";
 import { YoutubeMp3Downloader } from "./youtubeMp3Downloader";
 
-const YD = new YoutubeMp3Downloader({
-  ffmpegPath: "/path/to/ffmpeg",
-  outputPath: "../uploads/youtube",
-  youtubeVideoQuality: "lowest",
-  queueParallelism: 4,
-  progressTimeout: 2000,
-  allowWebm: true,
-});
-
 const YOUTUBE_UPLOADS_FOLDER = "youtube";
 
 interface Callbacks {
