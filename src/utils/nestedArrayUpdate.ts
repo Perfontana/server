@@ -11,7 +11,7 @@ export const getNestedArrayUpdate = <DocType>(
 
   return fieldsToUpdate.reduce((update: Record<string, any>, prop) => {
     if (newValues[prop]) {
-      update[`${path}.$.${prop}`] = newValues[prop];
+      update[`${path}.$.${String(prop)}`] = newValues[prop];
     }
 
     return update;

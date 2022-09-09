@@ -37,6 +37,12 @@ const buildApp = async ({
 
   await app.register(fastifySwagger, swaggerOptions);
 
+  if (process.env.NODE_ENV !== "production")
+    app.register(fastifyStatic, {
+      root: path.join(__dirname, "../uploads"),
+      prefix: "/uploads/",
+    });
+
   app.setErrorHandler(errorHandler(config, logger));
 
   app.register(routes(config, logger, socketServer), { prefix: API_URL });

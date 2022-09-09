@@ -21,6 +21,7 @@
     "fastify-plugin": "^3.0.1",
     "fastify-static": "^4.6.1",
     "fluent-ffmpeg": "^2.1.2",
+    "google-translate-tts": "^0.4.0-dev",
     "joi": "^17.6.0",
     "joi-to-json": "^2.2.4",
     "jsonwebtoken": "^8.5.1",

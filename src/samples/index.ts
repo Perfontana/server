@@ -3,6 +3,7 @@ import { Logger } from "pino";
 import { Server } from "socket.io";
 import { Config } from "../plugins/config";
 import { YoutubeDownloader } from "../utils/youtubeDownloader";
+import { googletts } from "./controllers/googletts";
 import { searchSampleRoute } from "./controllers/search";
 import { youtubeDownloadRoute } from "./controllers/youtube";
 
@@ -24,5 +25,6 @@ export const sampleRoutes =
           logger.child({ name: "youtube-download-route" }),
           youtubeDownloader
         )
-      );
+      )
+      .route(googletts(config, logger));
   };
